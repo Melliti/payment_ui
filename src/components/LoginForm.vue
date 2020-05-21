@@ -81,14 +81,16 @@ export default {
 <style lang="scss" scoped>
     article {
         height: 85vh;
-        display: flex;
         justify-content: center;
         align-items: center;
     }
 
     .container {
         position: relative;
-        width: 768px;
+        margin-top: 5%;
+        margin-left: 20%;
+        margin-bottom: 10%;
+        width: 60%;
         height: 550px;
         border-radius: 10px;
         overflow: hidden;
