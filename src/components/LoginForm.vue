@@ -18,14 +18,28 @@
             <form class="sign-up" action="#">
                 <h2>Create login</h2>
                 <div>Use your email for registration</div>
-                <input type="text" placeholder="First name" />
-                <input type="text" placeholder="Last name" />
+                <div class="form-block">
+                    <input type="text" placeholder="First name" class="firstname"/>
+                    <input type="text" placeholder="Last name" class="lastname"/>
+                </div>
                 <input type="email" placeholder="Email" />
                 <!-- <input type="text" placeholder="Phone number" /> -->
-                <vue-tel-input v-model="value"></vue-tel-input>
+
+                <vue-tel-input v-model="value" class="input"></vue-tel-input>
                 <!-- date of birth -->
                 <!-- address -->
                 <input type="password" placeholder="Password" />
+                <input type="password" placeholder="Password" />
+                <div class="form-block">
+                    <input type="text" placeholder="Zip" class="zip"/>
+                    <input type="text" placeholder="Street" class="street"/>
+                </div>
+                <div class="form-block">
+                    <input type="text" placeholder="City" class="city"/>                
+                    <input type="text" placeholder="Country" class="country"/>
+                </div>
+                <input type="date" placeholder="Birthdate" />
+
                 <button>Sign Up</button>
             </form>
             <form class="sign-in" action="#">
@@ -44,17 +58,25 @@
 import Vue from 'vue'
 import VueTelInput from 'vue-tel-input'
 Vue.use(VueTelInput)
+// import VueTelInput from 'vue-tel-input'
+
 
 export default {
     name: "LoginForm",
     data: () => {
         return {
             signUp: false,
-            phone: '',
-            value:''
+            value: ""
         }
     },
-};
+    name: "LoginForm",
+    methods: {
+        
+    },
+    components: {
+        // VueTelInput
+    }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -68,7 +90,7 @@ export default {
     .container {
         position: relative;
         width: 768px;
-        height: 480px;
+        height: 550px;
         border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 15px 30px rgba(0, 0, 0, .2),
@@ -172,7 +194,7 @@ export default {
         align-items: center;
         justify-content: space-around;
         flex-direction: column;
-        padding: 90px 60px;
+        padding: 40px 60px;
         width: 50%;
         height: 100%;
         text-align: center;
@@ -184,7 +206,7 @@ export default {
         font-size: 1rem
     }
 
-    input {
+    input, .input {
         background-color: #eee;
         border: none;
         padding: 8px 15px;
@@ -196,6 +218,11 @@ export default {
                     0 -1px 1px #fff, 
                     0 1px 0 #fff;
         overflow: hidden;
+
+        &.input {
+            padding: 0;
+
+        }
 
         &:focus {
             outline: none;
@@ -259,4 +286,23 @@ export default {
             z-index: 10;
         }
     }
+
+    .form-block {
+        display: flex;
+        width: 88%;
+        justify-content: space-between;
+    }
+
+    .zip {
+        width: 25%;
+    }
+
+    .street {
+        width: 70%;
+    }
+
+    .city, .country, .firstname, .lastname {
+        width: 47%;
+    }
+
 </style>
