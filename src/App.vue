@@ -1,47 +1,36 @@
+
 <template>
   <div id="app">
-    <Header />
+    <Header id="headerStyle"/>
     <router-view/>
+    <Nav></Nav>
   </div>
 </template>
+
 <script>
-
 import Header from "./components/layout/header"
-
+import Nav from './components/Nav'
 export default {
-  name: "App",
+  name: 'app',
   components: {
-    Header
+    'Nav': Nav,
+    'Header': Header
   }
 }
 
 </script>
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  min-height: 100vh;
 }
 
-#nav {
-  padding: 30px;
+#headerStyle{
+  height: 5rem;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

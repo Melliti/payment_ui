@@ -22,7 +22,7 @@
                 <input type="text" placeholder="Last name" />
                 <input type="email" placeholder="Email" />
                 <!-- <input type="text" placeholder="Phone number" /> -->
-                <vue-tel-input v-model="value" v-bind="bind"></vue-tel-input>
+                <vue-tel-input v-model="value"></vue-tel-input>
                 <!-- date of birth -->
                 <!-- address -->
                 <input type="password" placeholder="Password" />
@@ -41,23 +41,20 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import VueTelInput from 'vue-tel-input'
-
+Vue.use(VueTelInput)
 
 export default {
+    name: "LoginForm",
     data: () => {
         return {
-            signUp: false
+            signUp: false,
+            phone: '',
+            value:''
         }
     },
-    name: "LoginForm",
-    methods: {
-        
-    },
-    components: {
-        VueTelInput
-    }
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,8 +1,26 @@
 <template>
-  <div class="about">
-    <!-- <h1>This is the TodoList app v1.0.</h1> -->
-    <h2 v-if="this.users.length > 0">{{this.users[0].name}}</h2>
-    <h3 v-if="this.users.length > 0">{{this.users[0].money}}</h3>
+  <div class="info-main-wrapper" style="background-color:gray">
+    <v-layout>
+      <v-flex xs12>
+        <v-card max-width="50rem" class="mx-auto">
+              <v-row align="center" justify="center" class="fill-height">
+                  <v-avatar size="5rem" tile>
+                    <!-- Emplacement de l'Avatar user <v-img :src="getAvatar()"></v-img>-->
+                  </v-avatar>
+                  <v-file-input
+                    :rules="rules"
+                    accept="image/png, image/jpeg, image/bmp"
+                    placeholder="Choisissez une photo de profil"
+                    prepend-icon="mdi-camera"
+                    label="Avatar"
+                    v-model="file">
+                  </v-file-input>
+                  <v-text-field v-model="name" label="Nom d'utilisateur">{{user.name}}</v-text-field>
+                  <v-text-field v-model="email" label="Email">{{user.email}}</v-text-field>
+              </v-row>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
@@ -12,19 +30,30 @@ import axios from 'axios';
 export default {
   name: 'Profile',
   components: {
-
-  },
-  mounted: function() {
-    axios.get('https://jsonplaceholder.typicode.com/users')
-    .then(response => this.createUser(response));
-    // .then(response => this.users = response.data);
   },
   data() {
     return {
-      users: []
+      users: [],
+      user:{
+        id: '',
+        name:'',
+        userName: '',
+        email: '',
+      }
     }
   },
+  mounted: function() {
+    axios.get('https://jsonplaceholder.typicode.com/users',{
+    }).then((response) => {
+      console.log(response);
+      console.log(' TO '+name);
+      this.id = response.data[0].id;
+      this.name = response.data[0].name;
+      this.email = response.data[0].email;
+    })
+  },
   methods: {
+    //0: {id: 1, name: "Leanne Graham", username: "Bret", email: "Sincere@april.biz", address: {…}, …}
     createUser(response) {
       console.log(response.data[0]);
       console.log(typeof response);
@@ -36,7 +65,6 @@ export default {
       console.log(this.users)
       console.log(user)
       console.log("jusqu'ici tout va bien");
-
     }
   }
 }
