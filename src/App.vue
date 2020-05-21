@@ -3,17 +3,14 @@
   <div id="app">
     <Header id="headerStyle"/>
     <router-view/>
-    <Nav></Nav>
   </div>
 </template>
 
 <script>
 import Header from "./components/layout/header"
-import Nav from './components/Nav'
 export default {
   name: 'app',
   components: {
-    'Nav': Nav,
     'Header': Header
   }
 }

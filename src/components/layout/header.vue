@@ -1,17 +1,38 @@
 <template>
     <header class="header">
         <h1>Arjun Pay</h1>
-        <div id="nav">
-            <router-link to="/">Home</router-link> |
-            <router-link to="/Profile">Profile</router-link> |
-            <router-link to="/login">Login</router-link>
-        </div>
+        <nav>
+            <router-link v-for="routes in links" 
+            v-bind:key="routes.id"
+            :to="`${routes.page}`">{{routes.text}}</router-link>
+        </nav>
     </header>
 </template>
 
 <script>
 export default {
-    name: "Header"
+    name: "Header",
+    data() {
+    return {
+      links: [
+        {
+          id: 0,
+          text: 'Home',
+          page:'/Home'
+        },
+        {
+          id: 1,
+          text: 'Profile',
+          page:'/Profile'
+        },
+        {
+          id: 3,
+          text: 'Login',
+          page:'/Login'
+        },
+      ]
+    }
+  }
 }
 </script>
 
