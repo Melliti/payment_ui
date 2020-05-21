@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-// import VueTelInput from 'vue-tel-input'
+import VueTelInput from 'vue-tel-input'
  
-// Vue.use(VueTelInput);
+// require(VueTelInput).default
+Vue.use(VueTelInput);
 Vue.config.productionTip = false
-// Vue.component('field-tel-input')
+// Vue.component('field-tel-input').default
 
 new Vue({
   router,
-  // VueTelInput,
+  VueTelInput,
   render: h => h(App)
 }).$mount('#app')
