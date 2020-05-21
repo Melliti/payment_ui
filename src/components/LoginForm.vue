@@ -69,7 +69,6 @@ export default {
             value: ""
         }
     },
-    name: "LoginForm",
     methods: {
         
     },
