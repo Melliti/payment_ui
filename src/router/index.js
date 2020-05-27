@@ -23,6 +23,11 @@ export default new Router({
       name: 'Login',
       component: Login
     },
+    // {
+    //   path: '/Toto',
+    //   name: 'Toto',
+    //   component: Toto
+    // }
   ]
 })
 

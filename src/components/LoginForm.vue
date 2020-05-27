@@ -15,30 +15,30 @@
                     </div>
                 </div>
             </div>
-            <form class="sign-up" action="#">
+            <form class="sign-up" action="#" @submit.prevent="signUpSubmit">
                 <h2>Create login</h2>
                 <div>Use your email for registration</div>
                 <div class="form-block">
-                    <input type="text" placeholder="First name" class="firstname"/>
-                    <input type="text" placeholder="Last name" class="lastname"/>
+                    <input type="text" placeholder="First name" class="firstname" v-model="formInput.firstname" required/>
+                    <input type="text" placeholder="Last name" class="lastname" v-model="formInput.lastname" required/>
                 </div>
-                <input type="email" placeholder="Email" />
+                <input type="email" placeholder="Email" v-model="formInput.email" required/>
                 <!-- <input type="text" placeholder="Phone number" /> -->
 
-                <vue-tel-input v-model="value" class="input"></vue-tel-input>
+                <vue-tel-input v-model="formInput.phoneNumber" class="input" placeholder="Phone number" required></vue-tel-input>
                 <!-- date of birth -->
                 <!-- address -->
-                <input type="password" placeholder="Password" />
-                <input type="password" placeholder="Password" />
+                <input type="password" placeholder="Password" v-model="formInput.password" required/>
+                <input type="password" placeholder="Confirm Password" v-model="formInput.repeat_password" required/>
                 <div class="form-block">
-                    <input type="text" placeholder="Zip" class="zip"/>
-                    <input type="text" placeholder="Street" class="street"/>
+                    <input type="text" placeholder="Zip" class="zip" v-model="formInput.address.zipcode" required/>
+                    <input type="text" placeholder="Street" class="street" v-model="formInput.address.street" required/>
                 </div>
                 <div class="form-block">
-                    <input type="text" placeholder="City" class="city"/>                
-                    <input type="text" placeholder="Country" class="country"/>
+                    <input type="text" placeholder="City" class="city" v-model="formInput.address.city" required/>
+                    <input type="text" placeholder="Country" class="country" v-model="formInput.address.country" required/>
                 </div>
-                <input type="date" placeholder="Birthdate" />
+                <input type="date" placeholder="Birthdate" v-model="formInput.birthdate" required/>
 
                 <button>Sign Up</button>
             </form>
@@ -57,8 +57,8 @@
 <script>
 import Vue from 'vue'
 import VueTelInput from 'vue-tel-input'
+import axios from 'axios'
 Vue.use(VueTelInput)
-// import VueTelInput from 'vue-tel-input'
 
 
 export default {
@@ -66,19 +66,60 @@ export default {
     data: () => {
         return {
             signUp: false,
-            value: ""
+            formInput: {
+                firstname: '',
+                lastname: '',
+                email: '',
+                password: '',
+                repeat_password: '',
+                address: {
+                    street: '',
+                    zipcode: '',
+                    city: '',
+                    country: ''
+                },
+                phoneNumber: '',
+                birthdate: ''
+            },
+            errors: []
         }
     },
-    methods: {
+    mounted: function() {
+        const dropdown_tel = document.getElementsByClassName("vti__dropdown-list");
+        console.log(dropdown_tel);
+        dropdown_tel[0].style.position = "initial";
+        dropdown_tel[0].style.border = "none";
         
     },
+    methods: {
+        passwordConfirm () {
+            if (this.formInput.password !== this.formInput.repeat_password)
+                this.errors.push('Password missmatch')
+            if (this.formInput.password.length < 6)
+                this.errors.push('Your password must have at least 6 characters');
+            console.log(this.errors);
+            
+        },
+        signUpSubmit() {
+            this.errors = [];
+            console.log(this.formInput);
+            const date = Date(this.formInput.birthdate);
+            this.passwordConfirm();
+            console.log(date);
+            axios.post('http://localhost:3000/users/signup',
+            {body: this.formInput} );
+        }
+    },
     components: {
-        // VueTelInput
     }
 }
 </script>
 
 <style lang="scss" scoped>
+    ul {
+        position: initial;
+    }
+
     article {
         height: 85vh;
         justify-content: center;
@@ -90,7 +131,7 @@ export default {
         margin-top: 5%;
         margin-left: 20%;
         margin-bottom: 10%;
-        width: 60%;
+        width: 65%;
         height: 550px;
         border-radius: 10px;
         overflow: hidden;
@@ -290,7 +331,7 @@ export default {
 
     .form-block {
         display: flex;
-        width: 88%;
+        width: calc(100% - 30px);
         justify-content: space-between;
     }
 
