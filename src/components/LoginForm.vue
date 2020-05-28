@@ -19,34 +19,32 @@
                 <h2>Create login</h2>
                 <div>Use your email for registration</div>
                 <div class="form-block">
-                    <input type="text" placeholder="First name" class="firstname" v-model="formInput.firstname" required/>
-                    <input type="text" placeholder="Last name" class="lastname" v-model="formInput.lastname" required/>
+                    <input type="text" placeholder="First name" class="firstname" v-model="signInInput.firstName" required/>
+                    <input type="text" placeholder="Last name" class="lastname" v-model="signInInput.lastName" required/>
                 </div>
-                <input type="email" placeholder="Email" v-model="formInput.email" required/>
-                <!-- <input type="text" placeholder="Phone number" /> -->
+                <input type="email" placeholder="Email" v-model="signInInput.email" required/>
 
-                <vue-tel-input v-model="formInput.phoneNumber" class="input" placeholder="Phone number" required></vue-tel-input>
-                <!-- date of birth -->
-                <!-- address -->
-                <input type="password" placeholder="Password" v-model="formInput.password" required/>
-                <input type="password" placeholder="Confirm Password" v-model="formInput.repeat_password" required/>
+                <vue-tel-input v-model="signInInput.phoneNumber" class="input" placeholder="Phone number" required></vue-tel-input>
+                <!-- {{signInInput.phoneNumber}} -->
+                <input type="password" placeholder="Password" v-model="signInInput.password" required/>
+                <input type="password" placeholder="Confirm Password" v-model="signInInput.repeat_password" required/>
                 <div class="form-block">
-                    <input type="text" placeholder="Zip" class="zip" v-model="formInput.address.zipcode" required/>
-                    <input type="text" placeholder="Street" class="street" v-model="formInput.address.street" required/>
+                    <input type="text" placeholder="Zip" class="zip" v-model="signInInput.address.zipcode" required/>
+                    <input type="text" placeholder="Street" class="street" v-model="signInInput.address.street" required/>
                 </div>
                 <div class="form-block">
-                    <input type="text" placeholder="City" class="city" v-model="formInput.address.city" required/>
-                    <input type="text" placeholder="Country" class="country" v-model="formInput.address.country" required/>
+                    <input type="text" placeholder="City" class="city" v-model="signInInput.address.city" required/>
+                    <input type="text" placeholder="Country" class="country" v-model="signInInput.address.country" required/>
                 </div>
-                <input type="date" placeholder="Birthdate" v-model="formInput.birthdate" required/>
+                <input type="date" placeholder="Birthdate" v-model="signInInput.birthdate" required/>
 
                 <button>Sign Up</button>
             </form>
-            <form class="sign-in" action="#">
+            <form class="sign-in" action="#" @submit.prevent="logInSubmit">
                 <h2>Sign In</h2>
                 <div>Use your account</div>
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
+                <input type="email" placeholder="Email" v-model="logInInput.email"/>
+                <input type="password" placeholder="Password" v-model="logInInput.password"/>
                 <a href="#">Forgot your password ?</a>
                 <button>Sign In</button>
             </form>
@@ -66,9 +64,9 @@ export default {
     data: () => {
         return {
             signUp: false,
-            formInput: {
-                firstname: '',
-                lastname: '',
+            signInInput: {
+                firstName: '',
+                lastName: '',
                 email: '',
                 password: '',
                 repeat_password: '',
@@ -80,6 +78,10 @@ export default {
                 },
                 phoneNumber: '',
                 birthdate: ''
+            },
+            logInInput: {
+                email: '',
+                password: ''
             },
             errors: []
         }
@@ -93,21 +95,40 @@ export default {
     },
     methods: {
         passwordConfirm () {
-            if (this.formInput.password !== this.formInput.repeat_password)
+            if (this.signInInput.password !== this.signInInput.repeat_password)
                 this.errors.push('Password missmatch')
-            if (this.formInput.password.length < 6)
+            if (this.signInInput.password.length < 6)
                 this.errors.push('Your password must have at least 6 characters');
             console.log(this.errors);
             
         },
         signUpSubmit() {
             this.errors = [];
-            console.log(this.formInput);
-            const date = Date(this.formInput.birthdate);
+            console.log(this.signInInput);
+            const date = Date(this.signInInput.birthdate);
             this.passwordConfirm();
             console.log(date);
-            axios.post('http://localhost:3000/users/signup',
-            {body: this.formInput} );
+            console.log(this.signInInput.birthdate);
+            
+            axios.post('http://localhost:3000/users/signup', JSON.stringify(this.signInInput), {headers: {"content-type": "application/json"}})
+            .then(res => console.log(res))
+            .catch(error => console.log(error));
+            
+        },
+        logInSubmit() {
+            
+            console.log(this.logInInput);
+            axios.post('http://localhost:3000/users/login', JSON.stringify(this.logInInput), {headers: {"content-type": "application/json"}})
+            .then(res => {
+                console.log(res);
+                const token = res.data.token;
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace('-', '+').replace('_', '/');
+                console.log(JSON.parse(window.atob(base64)));
+                localStorage.setItem('token', token);
+                })
+            .catch(error => console.log(error));
+            
         }
     },
     components: {
@@ -132,7 +153,7 @@ export default {
         margin-left: 20%;
         margin-bottom: 10%;
         width: 65%;
-        height: 550px;
+        height: 600px;
         border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 15px 30px rgba(0, 0, 0, .2),
@@ -155,7 +176,7 @@ export default {
             left: -100%;
             height: 100%;
             width: 200%;
-            background: linear-gradient(to bottom right, #333, #999); //42b983
+            background: linear-gradient(to bottom right, #aaf, #eee); //42b983
             color: #fff;
             transform: translateX(0);
             transition: transform .5s ease-in-out;
@@ -166,9 +187,9 @@ export default {
             top: 0;
             display: flex;
             align-items: center;
-            justify-content: space-around;
+            justify-content: space-between;
             flex-direction: column;
-            padding: 70px 40px;
+            padding: 70px 70px;
             width: 50%;
             height: 100%;
             text-align: center;
